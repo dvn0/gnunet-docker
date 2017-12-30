@@ -1,7 +1,7 @@
-from ubuntu:16.04
+from debian:stretch
 
 # Install the required build tools
-RUN apt-get update && apt-get install -y git automake autopoint autoconf
+RUN apt-get update && apt-get install -y git automake autopoint autoconf build-essential
 
 # Install the required dependencies and libgcrypt
 RUN apt-get update && apt-get install -y libltdl-dev libgpg-error-dev libidn11-dev libunistring-dev libglpk-dev libbluetooth-dev libextractor-dev libmicrohttpd-dev libgnutls28-dev libgcrypt20-dev
