@@ -1,16 +1,16 @@
 from debian:stretch
 
 # Install the required build tools
-RUN apt-get update && apt-get install -y git automake autopoint autoconf build-essential
+RUN apt-get update && apt-get install -y git make automake autopoint autoconf
 
-# Install the required dependencies and libgcrypt
-RUN apt-get update && apt-get install -y libltdl-dev libgpg-error-dev libidn11-dev libunistring-dev libglpk-dev libbluetooth-dev libextractor-dev libmicrohttpd-dev libgnutls28-dev libgcrypt20-dev
+# Install the required dependencies, libgcrypt and wget
+RUN apt-get update && apt-get install -y libltdl-dev libgpg-error-dev libidn11-dev libunistring-dev libglpk-dev libbluetooth-dev libextractor-dev libmicrohttpd-dev libgnutls28-dev libgcrypt20-dev texinfo wget
 
 # Default decision to go with sqlite, missing modules with i.e. postgres
 RUN apt-get update && apt-get install -y libpq-dev libsqlite3-dev
 
 # Install gnurl from source at version gnurl-7.54.0
-RUN git clone https://git.taler.net/gnurl.git --branch gnurl-7.54.0
+RUN git clone https://gitlab.secushare.org/mirrors/gnurl.git --branch gnurl-7.57.0
 WORKDIR /gnurl
 RUN autoreconf -i
 RUN ./configure --enable-ipv6 --with-gnutls --without-libssh2 \
@@ -35,6 +35,7 @@ RUN ./bootstrap
 RUN ./configure --with-nssdir=/lib
 RUN make
 RUN make install
+RUN make check
 RUN ldconfig
 
 
