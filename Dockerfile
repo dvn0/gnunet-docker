@@ -9,8 +9,14 @@ RUN apt-get update && apt-get install -y libltdl-dev libgpg-error-dev libidn11-d
 # Default decision to go with sqlite, missing modules with i.e. postgres
 RUN apt-get update && apt-get install -y libpq-dev libsqlite3-dev
 
+# Testing dependencies
+RUN apt-get update && apt-get install -y libglib2.0-dev
+
 # Install gnurl from source at version gnurl-7.54.0
-RUN git clone https://gitlab.secushare.org/mirrors/gnurl.git --branch gnurl-7.57.0
+ENV GNURL_GIT_URL https://git.taler.net/gnurl.git
+ENV GNURL_GIT_BRANCH gnurl-7.57.0
+
+RUN git clone $GNURL_GIT_URL --branch $GNURL_GIT_BRANCH
 WORKDIR /gnurl
 RUN autoreconf -i
 RUN ./configure --enable-ipv6 --with-gnutls --without-libssh2 \
